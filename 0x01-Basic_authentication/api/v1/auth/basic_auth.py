@@ -4,6 +4,7 @@ Module for BasicAuth class
 """
 from . import auth
 
+
 class BasicAuth(auth.Auth):
     """BasicAuth class
     """
