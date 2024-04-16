@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
+import base64
 """ Main 1
 """
-from api.v1.auth.auth import Auth
+with open('buildings.PNG', 'rb') as f:
+    data = f.read()
 
-a = Auth()
+base64_encoding = base64.b64encode(data)
+base64_string = base64_encoding.decode('ascii')
+new_data = base64.b64decode(base64_string)
 
-print(a.require_auth(None, None))
-print(a.require_auth(None, []))
-print(a.require_auth("/api/v1/status/", []))
-print(a.require_auth("/api/v1/status/", ["/api/v1/status/"]))
-print(a.require_auth("/api/v1/status", ["/api/v1/status/"]))
-print(a.require_auth("/api/v1/users", ["/api/v1/status/"]))
-print(a.require_auth("/api/v1/users", ["/api/v1/status/", "/api/v1/stats"]))
+s = 'Basic '
+print(s[:7] is s)
