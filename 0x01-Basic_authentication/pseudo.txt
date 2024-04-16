@@ -1,0 +1,2 @@
+1. If path is None, return None
+2. If excluded_path is None or len(excluded_path) == 0, return None
