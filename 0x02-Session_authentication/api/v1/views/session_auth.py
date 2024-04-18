@@ -31,3 +31,17 @@ def login_view():
         return jsonify({"error": "wrong password"}), 401
     except Exception as e:
         abort(401)
+
+
+url = '/api/v1/auth_session/logout'
+
+
+@app_views.route(url, methods=['DELETE'], strict_slashes=False)
+def delete_session():
+    """Deletes session
+    """
+    from api.v1.app import auth
+    resp = auth.destroy_session(request)
+    if resp is False:
+        abort(404)
+    return jsonify({}), 200
