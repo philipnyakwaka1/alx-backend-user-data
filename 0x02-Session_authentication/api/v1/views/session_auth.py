@@ -9,6 +9,7 @@ import os
 
 @app_views.route('/auth_session/login', methods=['POST'], strict_slashes=False)
 def login_view():
+    """Login view"""
     email = request.form.get('email')
     if email is None or len(email) == 0:
         return jsonify({"error": "email missing"}), 400
