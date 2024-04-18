@@ -1,0 +1,5 @@
+1. initialize index to 0
+2. Use while loop to iterate over the array, while checking that i < len() - 1, increment i
+4. if array[i] == target, return it, else i++
+5. else array[i] != target && array[i] > target && array[i] - 1 < target return i - 1
+6. Finally return i
