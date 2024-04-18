@@ -37,7 +37,7 @@ def before_request_func():
                                    '/api/v1/auth_session/login/'])
         if check is True:
             cookie = auth.session_cookie
-            if auth.authorization_header(request) and cookie:
+            if auth.authorization_header(request) is None and cookie is None:
                 abort(401)
             if auth.current_user(request) is None:
                 abort(403)
