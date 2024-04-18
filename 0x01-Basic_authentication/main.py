@@ -1,14 +1,23 @@
 #!/usr/bin/env python3
+from typing import List
 import base64
-""" Main 1
-"""
-with open('buildings.PNG', 'rb') as f:
-    data = f.read()
 
-base64_encoding = base64.b64encode(data)
-base64_string = base64_encoding.decode('ascii')
-new_data = base64.b64decode(base64_string)
+my_list = [1,3,5,6]
 
-s = 'SG9:sYmVydG9u'
-if not ':' in s:
-    print('Yess')
+class Solution:
+    def searchInsert(self, nums: List[int], target: int) -> int:
+        left, right = 0, len(nums) - 1
+        while left <= right:
+            mid = (left + right) //2
+            if nums[mid] == target:
+                return mid
+            elif nums[mid] < target:
+                left = mid + 1
+            else:
+                right = mid - 1
+        return left
+
+    
+a = Solution()
+result = a.searchInsert(my_list, 7)
+print(result)
