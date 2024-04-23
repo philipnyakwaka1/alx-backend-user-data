@@ -53,7 +53,7 @@ class DB:
             raise NoResultFound('User not found')
         return user
 
-    def update_user(self, user_id, **kwargs):
+    def update_user(self, user_id: int, **kwargs) -> None:
         """Updates user attributes
         """
         user = self._session.query(User).filter(User.id == user_id).first()
@@ -64,3 +64,4 @@ class DB:
                 raise ValueError('Attribute does not exist')
             setattr(user, key, val)
         self._session.commit()
+        return None
