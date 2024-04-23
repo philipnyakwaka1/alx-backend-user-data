@@ -25,8 +25,14 @@ class User(Base):
     id = Column('id', Integer, primary_key=True)
     email = Column('email', String(250), nullable=False)
     hashed_password = Column('hashed_password', String(250), nullable=False)
-    session_id = Column('session_id', String(250), nullable=False)
-    reset_token = Column('reset_token', String(250), nullable=False)
+    session_id = Column('session_id', String(250))
+    reset_token = Column('reset_token', String(250))
+
+    def __init__(self, email: str, hashed_password: str) -> None:
+        """Initializes a user object
+        """
+        self.email = email
+        self.hashed_password = hashed_password
 
 
 Base.metadata.create_all(bind=engine)
