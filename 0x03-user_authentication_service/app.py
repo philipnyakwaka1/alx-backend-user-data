@@ -2,7 +2,7 @@
 """
 Flask application
 """
-from flask import Flask, request, jsonify, abort, make_response
+from flask import Flask, request, jsonify, abort
 from typing import List, Tuple
 from auth import Auth
 
@@ -30,16 +30,15 @@ def users():
 
 
 @app.route('/sessions', strict_slashes=False, methods=['POST'])
-def login():
+def login() -> str:
     """login function
     """
     email = request.form.get('email')
     password = request.form.get('password')
     if not auth.valid_login(email, password):
-        abort(401, 'Incorrect credentials')
+        abort(401)
     session_id = auth.create_session(email)
-    resp = make_response(
-        jsonify({"email": f"{email}", "message": "logged in"}))
+    resp = jsonify({"email": f"{email}", "message": "logged in"})
     resp.set_cookie('session_id', session_id)
     return resp, 200
 
