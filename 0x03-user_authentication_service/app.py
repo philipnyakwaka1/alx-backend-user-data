@@ -18,12 +18,13 @@ def home_page() -> Tuple[dict, int]:
 
 @app.route('/users', strict_slashes=False, methods=['POST'])
 def users():
+    """register user"""
     email = request.form.get('email')
     password = request.form.get('password')
     try:
         user = auth.register_user(email, password)
         return jsonify(
-            {"email": f"{user.email}", "message": "user created"}), 201
+            {"email": f"{user.email}", "message": "user created"}), 200
     except ValueError:
         return jsonify({"message": "email already registered"}), 400
 
