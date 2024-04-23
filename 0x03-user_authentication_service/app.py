@@ -2,7 +2,7 @@
 """
 Flask application
 """
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, abort, make_response
 from typing import List, Tuple
 from auth import Auth
 
@@ -27,6 +27,21 @@ def users():
             {"email": f"{user.email}", "message": "user created"}), 200
     except ValueError:
         return jsonify({"message": "email already registered"}), 400
+
+
+@app.route('/sessions', strict_slashes=False, methods=['POST'])
+def login():
+    """login function
+    """
+    email = request.form.get('email')
+    password = request.form.get('password')
+    if not auth.valid_login(email, password):
+        abort(401, 'Incorrect credentials')
+    session_id = auth.create_session(email)
+    resp = make_response(
+        jsonify({"email": f"{email}", "message": "logged in"}))
+    resp.set_cookie('session_id', session_id)
+    return resp, 200
 
 
 if __name__ == '__main__':
