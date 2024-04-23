@@ -3,6 +3,7 @@
 Flask application
 """
 from flask import Flask, request, jsonify, abort
+from flask import redirect, url_for
 from typing import List, Tuple
 from auth import Auth
 
@@ -41,6 +42,16 @@ def login() -> str:
     resp = jsonify({"email": f"{email}", "message": "logged in"})
     resp.set_cookie('session_id', session_id)
     return resp, 200
+
+
+@app.route('/sessions', methods=['DELETE'], strict_slashes=False)
+def logout():
+    session_id = request.cookies.get('session_id')
+    user = auth.get_user_from_session_id(session_id)
+    if user is not None:
+        auth.destroy_session(user.id)
+        return redirect(url_for('home_page'))
+    abort(403)
 
 
 if __name__ == '__main__':
