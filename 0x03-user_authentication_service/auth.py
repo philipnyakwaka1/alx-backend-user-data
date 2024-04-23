@@ -8,7 +8,7 @@ from sqlalchemy.orm.exc import NoResultFound
 import uuid
 
 
-def _generate_uuid():
+def _generate_uuid() ->str:
     """Generates unique id
     """
     return str(uuid.uuid4())
