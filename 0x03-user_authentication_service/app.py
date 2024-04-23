@@ -46,12 +46,12 @@ def login() -> str:
 
 @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
 def logout():
-    session_id = request.cookies.get('session_id')
+    session_id = request.cookies.get('session_id', None)
     user = auth.get_user_from_session_id(session_id)
-    if user is not None:
-        auth.destroy_session(user.id)
-        return redirect(url_for('home_page'))
-    abort(403)
+    if user is None:
+        abort(403)
+    auth.destroy_session(user.id)
+    return redirect('/')
 
 
 if __name__ == '__main__':
