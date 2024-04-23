@@ -1,21 +1,10 @@
 #!/usr/bin/env python3
 """Module for User class
 """
-from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import declarative_base
-from dotenv import load_dotenv
-import urllib.parse
-import os
 
-load_dotenv()
-DB_USER = os.getenv('DB_USER')
-PASSWORD = os.getenv('PASSWORD')
-HOST = os.getenv('HOST')
-DB = os.getenv('DB')
-password = urllib.parse.quote_plus(PASSWORD)
 
-url = f'mysql+mysqldb://{DB_USER}:{password}@{HOST}/{DB}'
-engine = create_engine(url)
 Base = declarative_base()
 
 
@@ -27,12 +16,3 @@ class User(Base):
     hashed_password = Column('hashed_password', String(250), nullable=False)
     session_id = Column('session_id', String(250))
     reset_token = Column('reset_token', String(250))
-
-    def __init__(self, email: str, hashed_password: str) -> None:
-        """Initializes a user object
-        """
-        self.email = email
-        self.hashed_password = hashed_password
-
-
-Base.metadata.create_all(bind=engine)
