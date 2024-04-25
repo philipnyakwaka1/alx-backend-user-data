@@ -49,12 +49,12 @@ def login() -> str:
 def logout():
     """Logout
     """
-    session_id = request.cookies.get('session_id', None)
+    session_id = request.cookies.get("session_id", None)
     user = auth.get_user_from_session_id(session_id)
-    if user is None:
+    if user is None or session_id is None:
         abort(403)
     auth.destroy_session(user.id)
-    return redirect('/')
+    return redirect("/")
 
 
 if __name__ == '__main__':
