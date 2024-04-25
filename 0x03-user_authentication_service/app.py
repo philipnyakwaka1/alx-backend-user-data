@@ -2,7 +2,7 @@
 """
 Flask application
 """
-from flask import Flask, request, jsonify, abort
+from flask import Flask, request, jsonify, abort, make_response
 from flask import redirect, url_for
 from typing import List, Tuple
 from auth import Auth
@@ -39,19 +39,22 @@ def login() -> str:
     if not auth.valid_login(email, password):
         abort(401)
     session_id = auth.create_session(email)
-    resp = jsonify({"email": f"{email}", "message": "logged in"})
+    resp = make_response(jsonify(
+        {"email": f"{email}", "message": "logged in"}))
     resp.set_cookie('session_id', session_id)
     return resp, 200
 
 
 @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
 def logout():
-    session_id = request.cookies.get("session_id", None)
+    """Logout
+    """
+    session_id = request.cookies.get('session_id', None)
     user = auth.get_user_from_session_id(session_id)
-    if user is None or session_id is None:
+    if user is None:
         abort(403)
     auth.destroy_session(user.id)
-    return redirect("/")
+    return redirect('/')
 
 
 if __name__ == '__main__':
