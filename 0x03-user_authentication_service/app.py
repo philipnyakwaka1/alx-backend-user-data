@@ -3,7 +3,7 @@
 Flask application
 """
 from flask import Flask, request, jsonify, abort, make_response
-from flask import redirect, url_for
+from flask import redirect
 from typing import List, Tuple
 from auth import Auth
 
@@ -45,7 +45,7 @@ def login() -> str:
     return resp
 
 
-@app.route('/sessions', methods=['DELETE'])
+@app.route('/sessions', methods=['DELETE'], strict_slashes=False)
 def logout():
     """Logout
     """
