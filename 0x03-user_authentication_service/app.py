@@ -30,7 +30,7 @@ def users():
         return jsonify({"message": "email already registered"}), 400
 
 
-@app.route('/sessions', strict_slashes=False, methods=['POST'])
+@app.route('/sessions', methods=['POST'], strict_slashes=False)
 def login() -> str:
     """login function
     """
@@ -42,7 +42,7 @@ def login() -> str:
     resp = make_response(jsonify(
         {"email": f"{email}", "message": "logged in"}))
     resp.set_cookie('session_id', session_id)
-    return resp, 200
+    return resp
 
 
 @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
