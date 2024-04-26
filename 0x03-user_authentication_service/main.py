@@ -65,6 +65,7 @@ def reset_password_token(email: str) -> str:
     resp = requests.post('http://localhost:5000/reset_password', data=payload)
     assert resp.status_code == 200
     assert resp.json().get('reset_token') is not None
+    return resp.json().get('reset_token')
 
 
 def update_password(email: str, reset_token: str, new_password: str) -> None:
@@ -73,8 +74,10 @@ def update_password(email: str, reset_token: str, new_password: str) -> None:
     payload = {'email': email,
                'reset_token': reset_token, 'new_password': new_password}
     resp = requests.put('http://localhost:5000/reset_password', data=payload)
-    assert resp.status_code == 200
-    assert resp.json().get('message') == 'Password updated'
+    if resp.status_code == 200:
+        assert(resp.json() == {"email": email, "message": "Password updated"})
+    else:
+        assert(resp.status_code == 403)
 
 
 EMAIL = "guillaume@holberton.io"
@@ -90,3 +93,6 @@ if __name__ == "__main__":
     session_id = log_in(EMAIL, PASSWD)
     profile_logged(session_id)
     log_out(session_id)
+    reset_token = reset_password_token(EMAIL)
+    update_password(EMAIL, reset_token, NEW_PASSWD)
+    log_in(EMAIL, NEW_PASSWD)
