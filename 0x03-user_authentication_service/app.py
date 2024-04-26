@@ -14,6 +14,8 @@ AUTH = Auth()
 
 @app.route('/', strict_slashes=False, methods=['GET'])
 def home_page() -> Tuple[dict, int]:
+    """Home page
+    """
     return jsonify({"message": "Bienvenue"}), 200
 
 
