@@ -9,7 +9,7 @@ from auth import Auth
 
 
 app = Flask(__name__)
-auth = Auth()
+AUTH = Auth()
 
 
 @app.route('/', strict_slashes=False, methods=['GET'])
@@ -23,7 +23,7 @@ def users():
     email = request.form.get('email')
     password = request.form.get('password')
     try:
-        user = auth.register_user(email, password)
+        user = AUTH.register_user(email, password)
         return jsonify(
             {"email": f"{user.email}", "message": "user created"}), 200
     except ValueError:
@@ -36,9 +36,9 @@ def login() -> str:
     """
     email = request.form.get('email')
     password = request.form.get('password')
-    if not auth.valid_login(email, password):
+    if not AUTH.valid_login(email, password):
         abort(401)
-    session_id = auth.create_session(email)
+    session_id = AUTH.create_session(email)
     resp = make_response(jsonify(
         {"email": f"{email}", "message": "logged in"}))
     resp.set_cookie('session_id', session_id)
@@ -50,10 +50,10 @@ def logout():
     """Logout
     """
     session_id = request.cookies.get('session_id', None)
-    user = auth.get_user_from_session_id(session_id)
+    user = AUTH.get_user_from_session_id(session_id)
     if user is None:
         abort(403)
-    auth.destroy_session(user.id)
+    AUTH.destroy_session(user.id)
     return redirect('/')
 
 
@@ -62,7 +62,7 @@ def profile() -> str:
     """Returns user profile
     """
     session_id = request.cookies.get('session_id')
-    user = auth.get_user_from_session_id(session_id)
+    user = AUTH.get_user_from_session_id(session_id)
     if user:
         return jsonify({"email": f"{user.email}"}), 200
     abort(403)
@@ -74,7 +74,7 @@ def get_reset_password_token() -> str:
     """
     email = request.form.get('email')
     try:
-        reset_token = auth.get_reset_password_token(email)
+        reset_token = AUTH.get_reset_password_token(email)
     except ValueError:
         abort(403)
     return jsonify(
@@ -89,7 +89,7 @@ def update_password() -> str:
     new_password = request.form.get('new_password')
     reset_token = request.form.get('reset_token')
     try:
-        auth.update_password(reset_token, new_password)
+        AUTH.update_password(reset_token, new_password)
     except ValueError:
         abort(403)
     return jsonify(
